@@ -54,3 +54,9 @@ if [ "${timestamp}" != "${old_timestamp}" ]; then
     logger -p cron.notice "IPSet: ${firewall_ipset} updated (as of: ${timestamp})."
 
 fi 
+
+iptables -nL INPUT | grep "block src" &>/dev/null  
+if [[ $? -ne 0 ]]; then  
+  iptables -I INPUT -m set --match-set block src -j DROP
+  iptables -I INPUT -s YOUR_IP_ADDRESS -j ACCEPT
+fi  
