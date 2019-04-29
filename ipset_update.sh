@@ -54,10 +54,9 @@ if [ "${timestamp}" != "${old_timestamp}" ]; then
     logger -p cron.notice "IPSet: ${firewall_ipset} updated (as of: ${timestamp})."
 
 fi 
-wanip=$(dig @resolver1.opendns.com ANY myip.opendns.com +short)
-echo "your ip as " $wanip " is excluded from iptable Rules :) you can Visit our Blog at Sindad.com/blog for more awesome Tutorials. "
+
 iptables -nL INPUT | grep "block src" &>/dev/null  
 if [[ $? -ne 0 ]]; then  
   iptables -I INPUT -m set --match-set block src -j DROP
-  iptables -I INPUT -s $wantip -j ACCEPT
+  iptables -I INPUT -s 'YOUR-IP-ADDRESS' -j ACCEPT
 fi  
